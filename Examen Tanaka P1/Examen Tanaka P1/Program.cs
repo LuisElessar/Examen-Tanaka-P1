@@ -21,41 +21,95 @@ namespace Examen_Tanaka_P1
             animales.Add(animal);
         }
 
-        public void Dia()
+        public void MostrarMenu()
         {
-            Console.WriteLine("Comienza un nuevo día en tu granjita :)");
+            bool continuar = true;
+            while (continuar)
+            {
+                Console.WriteLine("\n--- Menú de la Granja ---");
+                Console.WriteLine("1. Cosechar");
+                Console.WriteLine("2. Plantar");
+                Console.WriteLine("3. Alimentar Animales");
+                Console.WriteLine("4. AnimalesAlMatadero");
+                Console.WriteLine("5. Salir");
+                Console.Write("Elige una opción: ");
+                string opcion = Console.ReadLine();
 
+                switch (opcion)
+                {
+                    case "1":
+                        Cosechar();
+                        break;
+                    case "2":
+                        Plantar();
+                        break;
+                    case "3":
+                        AlimentarAnimales();
+                        break;
+                    case "4":
+                        AnimalesAlMatadero();
+                        break;
+                    case "5":
+                        continuar = false;
+                        Console.WriteLine("Saliendo del juego...");
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida.");
+                        break;
+                }
+            }
+        }
+
+        public void Cosechar()
+        {
             foreach (var cultivo in cultivos)
             {
-                cultivo.Cosechar(); 
+                cultivo.Cosechar();
             }
+        }
+
+        public void Plantar()
+        {
+            foreach (var cultivo in cultivos)
+            {
+                cultivo.Plantar();
+            }
+        }
+
+        public void AlimentarAnimales()
+        {
             foreach (var animal in animales)
             {
                 animal.Alimentar();
+            }
+        }
+
+        public void AnimalesAlMatadero()
+        {
+            foreach (var animal in animales)
+            {
                 animal.Palmatadero();
             }
         }
+
         public static void Main(string[] args)
         {
             JuegoGranjero juego = new JuegoGranjero();
-
-            Trigo trigo = new Trigo();
-            Zanahoria zanahoria = new Zanahoria();
             Papas papas = new Papas();
-
+            Trigo trigo = new Trigo();
+            Zanahoria maiz = new Zanahoria();
             Vaca vaca = new Vaca();
-            Caballo caballo = new Caballo();  
             Oveja oveja = new Oveja();
+            Caballo caballo = new Caballo();    
 
-            juego.AñadirAnimal(oveja);
-            juego.AñadirAnimal(vaca);
-            juego.AñadirAnimal(caballo);
-            
             juego.AñadirCultivo(trigo);
+            juego.AñadirCultivo(maiz);
             juego.AñadirCultivo(papas);
-            juego.AñadirCultivo(zanahoria);
+            juego.AñadirAnimal(vaca);
+            juego.AñadirAnimal(oveja);
+            juego.AñadirAnimal(caballo);
 
-            juego.Dia();
+            juego.MostrarMenu();
 
             Console.WriteLine("Presiona cualquier tecla para salir...");
             Console.ReadKey();
