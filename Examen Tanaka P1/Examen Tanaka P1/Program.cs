@@ -13,6 +13,7 @@ namespace Examen_Tanaka_P1
             JuegoGranjero juego = new JuegoGranjero();
             juego.IniciarJuego();
         }
+
     }
     public class JuegoGranjero
     {
