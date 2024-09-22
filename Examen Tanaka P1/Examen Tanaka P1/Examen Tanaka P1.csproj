@@ -43,8 +43,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animal Granja.cs" />
+    <Compile Include="Animal.cs" />
+    <Compile Include="Caballo.cs" />
+    <Compile Include="Cultivo comestible.cs" />
+    <Compile Include="Cultivo.cs" />
+    <Compile Include="Interface Animal.cs" />
+    <Compile Include="Interface Granja.cs" />
+    <Compile Include="Inventario.cs" />
+    <Compile Include="Oveja.cs" />
+    <Compile Include="Papa.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tienda.cs" />
+    <Compile Include="Trigo.cs" />
+    <Compile Include="Vaca.cs" />
+    <Compile Include="Zanahoria.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
