@@ -23,7 +23,14 @@ namespace Examen_Tanaka_P1
 
         public void Palmatadero()
         {
-            Console.WriteLine($"Has enviado al {Nombre} al matadero");
+            if (Diasrestantes == 0)
+            {
+                Console.WriteLine($"Has enviado al {Nombre} al matadero");
+            }
+            else
+            {
+                Console.WriteLine($"{Nombre} aún no está listo para ir al matadero.");
+            }
         }
     }
 }

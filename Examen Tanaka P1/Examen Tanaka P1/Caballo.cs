@@ -15,6 +15,7 @@ namespace Examen_Tanaka_P1
         }
         public new void Palmatadero()
         {
+            base.Palmatadero();
             Console.WriteLine($"Has obtenido carne de caballo, pero no te la comas, acá no hacemos eso");
         }
     }
