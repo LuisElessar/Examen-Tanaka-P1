@@ -14,17 +14,32 @@ namespace Examen_Tanaka_P1
 
         public override void crece()
         {
-            Console.WriteLine($"{Nombre} está creciendo. Tardará {Crecimiento} días.");
+           if (Diasrestantes == 0)
+            {
+                Console.WriteLine($"{Nombre} está listo para cosechar.");
+            }
+           else
+            {
+                Console.WriteLine($"{Nombre} está creciendo. Tardará {Crecimiento} días.");
+            }
         }
 
         public void Cosechar()
         {
-            Console.WriteLine($"Has cosechado {Nombre}.");
+            if (Diasrestantes == 0)
+            {
+                Console.WriteLine($"Has cosechado {Nombre}.");
+                Diasrestantes = Crecimiento;
+            }
+            else
+            {
+                Console.WriteLine($"{Nombre} no está listo para cosechar.");
+            }
         }
 
         public void Plantar()
         {
-            Console.WriteLine($"Has plantado {Nombre}.");
+            Console.WriteLine($"Has plantado {Nombre}. Faltan {Diasrestantes} para que se coseche");
         }
     }
 }

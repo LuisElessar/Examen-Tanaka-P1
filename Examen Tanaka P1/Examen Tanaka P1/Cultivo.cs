@@ -10,10 +10,21 @@ namespace Examen_Tanaka_P1
     {
         public string Nombre { get; set; }
         public int Crecimiento { get; set; }
+
+        public int Diasrestantes { get; set; }
         public Cultivo(string nombre, int crecimiento)
         {
             Nombre = nombre;
             Crecimiento = crecimiento;
+            Diasrestantes = crecimiento;
+        }
+
+        public void PasarDia()
+        {
+            if (Diasrestantes > 0)
+            {
+                Diasrestantes--;
+            }
         }
         public abstract void crece();
     }

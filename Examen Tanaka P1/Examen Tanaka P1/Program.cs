@@ -6,114 +6,170 @@ using System.Threading.Tasks;
 
 namespace Examen_Tanaka_P1
 {
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            JuegoGranjero juego = new JuegoGranjero();
+            juego.IniciarJuego();
+        }
+    }
     public class JuegoGranjero
     {
-        private List<IGranja> cultivos = new List<IGranja>();
-        private List<IAnimal> animales = new List<IAnimal>();
+        private Inventario inventario;
+        private Tienda tienda;
+        private int dias;
+        private const int DiasPorCobro = 30;
+        private const int MonedasPorCobro = 10;
 
-        public void AñadirCultivo(IGranja cultivo)
+        public JuegoGranjero()
         {
-            cultivos.Add(cultivo);   
+            inventario = new Inventario(50);
+            tienda = new Tienda();
+            dias = 0;
         }
 
-        public void AñadirAnimal(IAnimal animal)
+        public void PasarDia()
         {
-            animales.Add(animal);
+            dias++;
+            foreach (var cultivo in inventario.Cultivos)
+            {
+                if (cultivo is CultivoComible cultivoComestible)
+                {
+                    cultivoComestible.PasarDia();
+                }
+            }
+
+            foreach (var animal in inventario.Animales)
+            {
+                if (animal is AnimalG mamifero)
+                {
+                    mamifero.PasarDia();
+                }
+            }
+
+            if (dias % DiasPorCobro == 0)
+            {
+                Pagar();
+            }
+        }
+
+        public void Pagar()
+        {
+            if (inventario.Monedas >= MonedasPorCobro)
+            {
+                inventario.Monedas -= MonedasPorCobro;
+                Console.WriteLine($"Has pagado {MonedasPorCobro} monedas.");
+            }
+            else
+            {
+                Console.WriteLine("No tienes suficientes monedas para pagar. Has perdido el juego.");
+                Environment.Exit(0);
+            }
         }
 
         public void MostrarMenu()
         {
-            bool continuar = true;
-            while (continuar)
+            Console.WriteLine("\n--- Menú del Día ---");
+            Console.WriteLine("1. Plantar o Cosechar cultivos.");
+            Console.WriteLine("2. Alimentar o Recolectar productos de los animales.");
+            Console.WriteLine("3. Comprar cultivos o animales.");
+            Console.WriteLine("4. Ver inventario.");
+            Console.WriteLine("5. Pasar al siguiente día.");
+            Console.WriteLine("Selecciona una opción:");
+        }
+
+        public void IniciarJuego()
+        {
+            while (true)
             {
-                Console.WriteLine("\n--- Menú de la Granja ---");
-                Console.WriteLine("1. Cosechar");
-                Console.WriteLine("2. Plantar");
-                Console.WriteLine("3. Alimentar Animales");
-                Console.WriteLine("4. AnimalesAlMatadero");
-                Console.WriteLine("5. Salir");
-                Console.Write("Elige una opción: ");
+                MostrarMenu();
                 string opcion = Console.ReadLine();
 
                 switch (opcion)
                 {
                     case "1":
-                        Cosechar();
+                        ManejarCultivos();
                         break;
                     case "2":
-                        Plantar();
+                        ManejarAnimales();
                         break;
                     case "3":
-                        AlimentarAnimales();
+                        ManejarCompras();
                         break;
                     case "4":
-                        AnimalesAlMatadero();
+                        inventario.MostrarInventario();
                         break;
                     case "5":
-                        continuar = false;
-                        Console.WriteLine("Saliendo del juego...");
+                        PasarDia();
                         break;
                     default:
-                        Console.WriteLine("Opción no válida.");
+                        Console.WriteLine("Opción inválida.");
                         break;
                 }
             }
         }
 
-        public void Cosechar()
+        public void ManejarCultivos()
         {
-            foreach (var cultivo in cultivos)
+            foreach (var cultivo in inventario.Cultivos)
             {
-                cultivo.Cosechar();
+                if (cultivo is CultivoComible cultivoComestible)
+                {
+                    cultivoComestible.crece();
+                    cultivoComestible.Cosechar();
+                }
             }
         }
 
-        public void Plantar()
+        public void ManejarAnimales()
         {
-            foreach (var cultivo in cultivos)
+            foreach (var animal in inventario.Animales)
             {
-                cultivo.Plantar();
+                if (animal is AnimalG mamifero)
+                {
+                    mamifero.Alimentar();
+                    mamifero.Palmatadero();
+                }
             }
         }
 
-        public void AlimentarAnimales()
+        public void ManejarCompras()
         {
-            foreach (var animal in animales)
+            Console.WriteLine("Selecciona una opción:");
+            Console.WriteLine("1. Comprar Trigo (5 monedas).");
+            Console.WriteLine("2. Comprar Zanahoria (7 monedas).");
+            Console.WriteLine("3. Comprar Papas (10 monedas)");
+            Console.WriteLine("4. Comprar Vaca (15 monedas).");
+            Console.WriteLine("5. Comprar Oveja (12 monedas).");
+            Console.WriteLine("6. Comprar Caballo (20 monedas).");
+            string opcion = Console.ReadLine();
+
+            switch (opcion)
             {
-                animal.Alimentar();
+                case "1":
+                    tienda.ComprarCultivo(inventario, new Trigo(), 5);
+                    break;
+                case "2":
+                    tienda.ComprarCultivo(inventario, new Zanahoria(), 7);
+                    break;
+                case "3":
+                    tienda.ComprarCultivo(inventario, new Papas(), 10);
+                    break;
+                case "4":
+                    tienda.ComprarAnimal(inventario, new Vaca(), 15);
+                    break;
+                case "5":
+                    tienda.ComprarAnimal(inventario, new Oveja(), 12);
+                    break;
+                case "6":
+                    tienda.ComprarAnimal(inventario, new Caballo(), 20);
+                    break;
+                default:
+                    Console.WriteLine("Opción inválida.");
+                    break;
             }
-        }
-
-        public void AnimalesAlMatadero()
-        {
-            foreach (var animal in animales)
-            {
-                animal.Palmatadero();
-            }
-        }
-
-        public static void Main(string[] args)
-        {
-            JuegoGranjero juego = new JuegoGranjero();
-            Papas papas = new Papas();
-            Trigo trigo = new Trigo();
-            Zanahoria maiz = new Zanahoria();
-            Vaca vaca = new Vaca();
-            Oveja oveja = new Oveja();
-            Caballo caballo = new Caballo();    
-
-            juego.AñadirCultivo(trigo);
-            juego.AñadirCultivo(maiz);
-            juego.AñadirCultivo(papas);
-            juego.AñadirAnimal(vaca);
-            juego.AñadirAnimal(oveja);
-            juego.AñadirAnimal(caballo);
-
-            juego.MostrarMenu();
-
-            Console.WriteLine("Presiona cualquier tecla para salir...");
-            Console.ReadKey();
         }
     }
-
 }
+
